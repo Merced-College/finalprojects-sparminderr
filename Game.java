@@ -5,11 +5,13 @@
 import java.util.*;
 public class Game {
 
+    // keyboard usage as wel lass player and monster objects 
     Scanner scanner = new Scanner(System.in);
     Player player;
     Monster monster;
     Stack<String> history = new Stack<>();
 
+    // 
     public void start() {
         System.out.print("Enter your name: ");
         String name = scanner.nextLine();
@@ -19,6 +21,8 @@ public class Game {
         townGate();
     }
 
+    // from before, town gate start of the game, and saves it to the history stack
+    // holds player choices and logics
     public void townGate() {
         history.push("Town Gate");
 
@@ -41,6 +45,7 @@ public class Game {
         }
     }
 
+    // another location 
     public void forest() {
         history.push("Forest");
 
@@ -48,6 +53,7 @@ public class Game {
         fight();
     }
 
+    // handles fight logic in the game, taking and receiving damage. Also deals with defeating/win condition for the enemy.
     public void fight() {
         System.out.println("1: Attack \n2: Run");
         int choice = scanner.nextInt();
