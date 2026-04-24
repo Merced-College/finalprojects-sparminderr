@@ -10,7 +10,7 @@ public class Inventory {
     // handles when you add an itemand prints out a message showing you did
     public void addItem(String item) {
         items.add(item);
-        System.out.println(item + " added!");
+        System.out.println("Picked up: " + item);
     }
 
     // shows all the items you have and prints them
@@ -32,5 +32,12 @@ public class Inventory {
     // sorting algorithm: sorts the list alphabetically, uses inbuild timSort 
     public void sortItems() {
         Collections.sort(items);
+    }
+
+    // win condtion
+    public boolean hasAllItems() {
+        return hasItem("Silver Ring")
+            && hasItem("Wolf Fang")
+            && hasItem("Ancient Coin");
     }
 }

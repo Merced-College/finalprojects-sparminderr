@@ -8,17 +8,17 @@ public class Player {
     // player properties
     String name;
     int hp;
-    Weapon weapon;
+    String weapon;
     Inventory inventory;
 
-    // creates hasmaps for the weapons
+    // creates hasmaps for the weapon
     HashMap<String, Integer> weaponDamage = new HashMap<>();
 
     // constructor for the player, and runs when player object is created
     public Player(String name) {
         this.name = name;
         this.hp = 20;
-        this.weapon = new Weapon("Knife");
+        this.weapon = "Knife";
 
         inventory = new Inventory();
 
@@ -29,8 +29,8 @@ public class Player {
 
     // does the damage calculation
     public int attack() {
-        int maxDamage = weaponDamage.get(weapon.name);
-        return(int)(Math.random() * maxDamage);
+        int maxDamage = weaponDamage.get(weapon);
+        return (int)(Math.random() * maxDamage);
     }
 
     // handles damage taken to player hp

@@ -5,13 +5,13 @@
 import java.util.*;
 public class Game {
 
-    // keyboard usage as wel lass player and monster objects 
+    // keyboard usage, player,monster,and choice objects
     Scanner scanner = new Scanner(System.in);
     Player player;
     Monster monster;
-    Stack<String> history = new Stack<>();
+    int choice;
 
-    // 
+    //  starts the game, write the name, and handles the enemy
     public void start() {
         System.out.print("Enter your name: ");
         String name = scanner.nextLine();
@@ -22,64 +22,122 @@ public class Game {
     }
 
     // from before, town gate start of the game, and saves it to the history stack
-    // holds player choices and logics
+    // handles player choices and logics
     public void townGate() {
-        history.push("Town Gate");
 
         System.out.println("\nYou are at the town gate!");
-        System.out.println("\n1: Go to the forest");
-        System.out.println("\n2: View Inventory");
+        System.out.println("\n1: Talk to the guard");
+        System.out.println("\n2: Go to the crossroad");
 
         int choice = scanner.nextInt();
 
         if (choice == 1) {
-            forest();
-        } 
-        else if (choice == 2){
-            player.inventory.showItems();
+            if (player.inventory.hasAllItems()){
+                ending();
+            } 
+            else {
+                System.out.println("Guard: You do not have all the items.");
+                townGate();
+            }
+            else if (choice == 2){
+                crossroad();
+            }
+            else {
+                townGate();
+            }
+    }
+
+    // first location, handles multiple paths
+    public void crossroad() {
+
+        System.out.println("\n~~Crossroad~~");
+        System.out.println("1: North (River)");
+        System.out.println("2: East (Sword)");
+        System.out.println("3: West (Forest)");
+        System.out.println("4: Back to town");
+
+        choice = scanner.nextInt();
+
+        if (choice == 1){
+            river();
+        }
+        else if (choice == 2) {
+            SwordPath();
+        }
+        else if ( choice == 3){
+            forestFight();
+        }
+        else {
             townGate();
         }
-        // recursion
-        else {
-            retry(() -> townGate());
-        }
     }
 
-    // another location 
-    public void forest() {
-        history.push("Forest");
-
-        System.out.println("\nA Monster jumps out!");
-        fight();
+    // handles the north
+    public void river() {
+        System.out.println("You find a resting place (+1 HP");
+        player.hp += 1;
+        crossroad();
     }
+    // handles the east 
+    public void SwordPath() {
+        System.out.println("You found a sword!");
+        player.weapon = "Sword";
+        crossroad();
+    }
+
+    // handles the west
+    public void forestFight() {
+        monster = new Monster("Goblin", 10);
+        fight("Silver Ring");
+    }
+
+    //
 
     // handles fight logic in the game, taking and receiving damage. Also deals with defeating/win condition for the enemy.
-    public void fight() {
-        System.out.println("1: Attack \n2: Run");
-        int choice = scanner.nextInt();
+    public void fight(String rewardItem) {
+        System.out.println("\n FIGHT STARTS");
+        while (monster.hp > 0 && player.hp > 0){
+            System.out.println("1: Attack");
+            System.out.println("2: Run");
 
-        if (choice == 1) {
-            int damage = player.attack();
-            monster.takeDamage(damage);
+            choice = scanner.nextInt();
 
-            if (monster.isAlive()) {
-                player.takeDamage(monster.attack());
-                fight();
+            if (choice == 1) {
+                int damage = player.attack();
+                monster.hp -= damage;
+                System.out.println("You Win!");
+                player.inventory.addItem(rewardItem);
+                crossroad();
+                return;
+            }
+
+            int monsterDamage = monster.attack();
+            player.hp -= monsterDamage;
+            System.out.println("Monster hits you for " + monsterDamage);
+
+            if (player.hp <= 0) {
+                dead();
+                return;
             }
             else {
-                System.out.println("You win!");
-                player.inventory.addItem("Silver Ring");
-                townGate();
-            }
-            else {
-                townGate();
+                crossroad();
+                return;
             }
         }
     }
 
-    // recursion
-        public void retry(Runnable action) {
-            System.out.println("Invalid choice. Try again.");
-            action.run();
-        }
+    // handles the ending of the game, prints out whether you won or lost
+    public void ending(){
+
+        System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~");
+        System.out.println("GUARD: You proved worthy, well done!");
+        System.out.println("You collected all 3  items!");
+        System.out.println("WELCOME TO THE TOWN!");
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~");
+    }
+
+    // handles when player dies
+    public void dead() {
+        System.out.println("\nYou Died!");
+    }
 }
