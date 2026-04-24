@@ -5,13 +5,16 @@
 import java.util.*;
 public class Player {
     
+    // player properties
     String name;
     int hp;
     Weapon weapon;
     Inventory inventory;
 
-    HashMap<String, Int> weaponDamage = new HashMap<>();
+    // creates hasmaps for the weapons
+    HashMap<String, Integer> weaponDamage = new HashMap<>();
 
+    // constructor for the player, and runs when player object is created
     public Player(String name) {
         this.name = name;
         this.hp = 20;
@@ -30,6 +33,7 @@ public class Player {
         return(int)(Math.random() * maxDamage);
     }
 
+    // handles damage taken to player hp
     public void takeDamage(int dmg) {
         hp -= dmg;
         System.out.println("Player HP: " + hp);
