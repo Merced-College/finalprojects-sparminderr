@@ -32,19 +32,22 @@ public class Game {
         int choice = scanner.nextInt();
 
         if (choice == 1) {
-            if (player.inventory.hasAllItems()){
-                ending();
-            } 
-            else {
-                System.out.println("Guard: You do not have all the items.");
-                townGate();
-            }
-            else if (choice == 2){
-                crossroad();
-            }
-            else {
-                townGate();
-            }
+
+        if (player.inventory.hasAllItems()) {
+            ending();
+        } 
+        else {
+            System.out.println("Guard: You do not have all the items.");
+            townGate();
+        }
+
+        } 
+        else if (choice == 2) {
+            crossroad();
+        } 
+        else {
+            townGate();
+        }
     }
 
     // first location, handles multiple paths
@@ -74,7 +77,8 @@ public class Game {
 
     // handles the north
     public void river() {
-        System.out.println("You find a resting place (+1 HP");
+        System.out.println("You find a resting place (+1 HP)");
+        player.inventory.addItem("Ancient Coin");
         player.hp += 1;
         crossroad();
     }
@@ -82,6 +86,10 @@ public class Game {
     public void SwordPath() {
         System.out.println("You found a sword!");
         player.weapon = "Sword";
+        // new mosnter
+        System.out.println("A wild Wolf appears!");
+        monster = new Monster("Wolf", 15);
+        fight("Wolf Fang"); // reward item
         crossroad();
     }
 
@@ -103,9 +111,15 @@ public class Game {
             choice = scanner.nextInt();
 
             if (choice == 1) {
-                int damage = player.attack();
-                monster.hp -= damage;
-                System.out.println("You Win!");
+
+            int damage = player.attack();
+            monster.hp -= damage;
+
+            System.out.println("You deal " + damage + " damage!");
+            System.out.println("Monster HP: " + monster.hp);
+
+            if (monster.hp <= 0) {
+                System.out.println("You win!");
                 player.inventory.addItem(rewardItem);
                 crossroad();
                 return;
@@ -113,18 +127,16 @@ public class Game {
 
             int monsterDamage = monster.attack();
             player.hp -= monsterDamage;
+
             System.out.println("Monster hits you for " + monsterDamage);
 
             if (player.hp <= 0) {
                 dead();
                 return;
             }
-            else {
-                crossroad();
-                return;
-            }
         }
     }
+}
 
     // handles the ending of the game, prints out whether you won or lost
     public void ending(){
