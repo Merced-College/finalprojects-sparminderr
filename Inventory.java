@@ -22,7 +22,7 @@ public class Inventory {
     // compares each item to the one you want and returns a true/false when found or not
     // time complexity: O(n)
     public boolean hasItem(String item) {
-        for (String 1: items) {
+        for (String i : items) {
             if (i.equals(item)) 
                 return true;
         }

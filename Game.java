@@ -41,7 +41,7 @@ public class Game {
         }
         // recursion
         else {
-            retry(townGateLoop -> townGate()); 
+            retry(() -> townGate());
         }
     }
 
@@ -49,7 +49,7 @@ public class Game {
     public void forest() {
         history.push("Forest");
 
-        System.println("\nA Monster jumps out!");
+        System.out.println("\nA Monster jumps out!");
         fight();
     }
 
@@ -68,7 +68,7 @@ public class Game {
             }
             else {
                 System.out.println("You win!");
-                player.Inventory.addItem("Silver Ring");
+                player.inventory.addItem("Silver Ring");
                 townGate();
             }
             else {
