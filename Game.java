@@ -58,6 +58,7 @@ public class Game {
         System.out.println("2: East (Sword)");
         System.out.println("3: West (Forest)");
         System.out.println("4: Back to town");
+        System.out.println("5: View Inventory");
 
         choice = scanner.nextInt();
 
@@ -70,11 +71,22 @@ public class Game {
         else if ( choice == 3){
             forestFight();
         }
+        else if (choice == 5){
+            viewInventory();
+        }
         else {
             townGate();
         }
     }
 
+    // handles inventory
+    public void viewInventory() {
+        System.out.println("\n~~~~~Inventory~~~~~");
+        player.inventory.showItems();
+        System.out.println("~~~~~~~~~~~~~~~\n");
+        crossroad();
+    }
+    
     // handles the north
     public void river() {
         System.out.println("You find a resting place (+1 HP)");
@@ -129,11 +141,16 @@ public class Game {
             player.hp -= monsterDamage;
 
             System.out.println("Monster hits you for " + monsterDamage);
+            System.out.println("Player HP: " + player.hp);
 
             if (player.hp <= 0) {
                 dead();
                 return;
             }
+        } 
+        else if (choice == 2) {
+            crossroad();
+            return;
         }
     }
 }

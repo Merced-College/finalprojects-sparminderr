@@ -15,7 +15,13 @@ public class Inventory {
 
     // shows all the items you have and prints them
     public void showItems() {
-        System.out.println("Inventory: " + items);
+        if (items.isEmpty()) {
+            System.out.println("Your inventory is empty.");
+        } else {
+            for (String item : items) {
+                System.out.println("- " + item);
+            }
+        }
     }
 
     // linear search algorithm: checks if items exists and loops through each item in the list. 
